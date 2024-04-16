@@ -13,6 +13,10 @@ th {
     background-color: #f2f2f2;
 }
 
+#match-details p, h2{
+    color: white;
+    text-align: center;
+}
 
 footer {
     background-color: #111111;
