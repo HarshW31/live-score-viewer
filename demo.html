@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Series Listing</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loader"></div>
+    <div id="menu-container" class="hidden">
+        <div class="container">
+            <div class="input">
+                <button class="value" data-endpoint="2daysago"> 2-DAYS AGO </button>
+                <button class="value" data-endpoint="yesterday"> YESTERDAY </button>
+                    <button class="value" data-endpoint="live"> LIVE </button>
+                <button class="value" data-endpoint="tomorrow"> TOMORROW </button>
+            </div>
+        </div>
+    
+
+    <div class="element-with-line">
+        <div class="vertical-line"></div>
+        <!-- Content goes here -->
+    </div>
+
+    <div id="series-container" class="hidden"></div>
+    <div class="content-above-footer">
+        <p>Cricket Live Scores - Latest Cricket Results, Fixtures and Tables</p><br><p>
+            LiveScore.com is the go-to destination for live cricket scores and all the latest cricket news from around the world. Whether you’re after today’s results or
+             fixtures for Test cricket, one-day matches or<br> Twenty20 cricket, all the top leagues and tournaments at county and international level are covered in unbeatable detail.
+             We provide fixtures, scores and results from popular competitions such as the <br>Cricket World Cup, the T20 World Cup, English cricket’s County Championship, the Indian Premier
+              League and Australia’s Big Bash League. And of course, no cricket destination would be able to bowl you <br>over without featuring The Ashes, the famous Test series played between
+               England and Australia for the right to hold the prestigious Ashes urn. With scorecards and match info at your fingertips 24/7, you<br> won’t need to look anywhere else for the most 
+               comprehensive cricket coverage around.
+            </p>
+    </div>
+      <footer>
+      <ul>
+            <li><a href="file:///C:/Users/mayur/Downloads/Careers%20-%20LSG.html">Careers </a></li>
+          
+            <li><a href="file:///C:/Users/mayur/Downloads/Advertise%20-%20LSG.html">Advertise </a></li>
+            <li><a href="file:///C:/Users/mayur/Downloads/LiveScore%20Media.html">Faq </a></li>
+
+
+            <li><a href="file:///C:/Users/mayur/OneDrive/Desktop/Score%20Viewer/Score%20Viewer/Cookies%20Policy.html">Cookie Policy </a></li>
+            <li><a href="file:///C:/Users/mayur/OneDrive/Desktop/Score%20Viewer/Score%20Viewer/Terms%20of%20Use.html">Terms of Use </a></li>
+            <li><a href="file:///C:/Users/mayur/OneDrive/Desktop/Score%20Viewer/Score%20Viewer/Modern%20Slavery%20Act%20Statement.html">Modern Slavery Statement </a></li>
+            <li><a href="file:///C:/Users/mayur/Downloads/LiveScore%20Group%20-%20Converging%20the%20global%20sports%20media%20and%20betting%20industries.html">Corporate </a></li>
+        </ul>
+    </footer>
+
+    <script>
+       /* async function fetchData(endpoint) {
+            let url = '';
+            const today = new Date();
+            let formattedDate = '';           
+            if (endpoint === 'live') {
+                url = 'https://livescore6.p.rapidapi.com/matches/v2/list-live?Category=cricket&Timezone=-7';
+            } else {
+                let targetDate = new Date();
+                if (endpoint === 'yesterday') {
+                    targetDate.setDate(today.getDate() - 1);
+                } else if (endpoint === '2daysago') {
+                    targetDate.setDate(today.getDate() - 2);
+                } else if (endpoint === 'tomorrow') {
+                    targetDate.setDate(today.getDate() + 1);
+                }
+                formattedDate = targetDate.toISOString().slice(0, 10).replace(/-/g, '');
+                url = `https://livescore6.p.rapidapi.com/matches/v2/list-by-date?Category=cricket&Date=${formattedDate}&Timezone=-7`;
+            }
+
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': 'f078201a44msh623bbbd340b6e51p1143fejsn3619fa89c3c7',
+                    'X-RapidAPI-Host': 'livescore6.p.rapidapi.com'
+                }
+            };
+             try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const result = await response.json();
+                setTimeout(() => {
+                    displaySeries1(result.Stages);
+                    document.getElementById('left').classList.remove('hidden');
+                    document.getElementById('menu-container').classList.remove('hidden');
+                    document.querySelector('.loader').style.display = 'none';
+                }, 2000);
+            } catch (error) {
+                console.error(error);
+            }
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const result = await response.json();
+                setTimeout(() => {
+                    displaySeries(result.Stages);
+                    document.getElementById('series-container').classList.remove('hidden');
+                    document.getElementById('menu-container').classList.remove('hidden');
+                    document.querySelector('.loader').style.display = 'none';
+                }, 2000);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function attachEventListeners() {
+            document.querySelectorAll('.value').forEach(button => {
+                button.addEventListener('click', () => {
+                    const endpoint = button.getAttribute('data-endpoint');
+                    fetchData(endpoint);
+                });
+            });
+        }
+
+        
+        function displaySeries(seriesList) {
+            const seriesContainer = document.getElementById('series-container');
+            seriesContainer.innerHTML = '';
+            seriesList.forEach(series => {
+                const seriesDiv = document.createElement('div');
+                seriesDiv.classList.add('series-container');
+                const events = series.Events;
+                events.forEach(event => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.classList.add('series');
+                    eventDiv.innerHTML = `
+                                <h2>${event.T1[0].Nm} VS ${event.T2[0].Nm}</h2>
+                          
+                                <h3>${series.Cnm}</h3>
+                                <p class="match-info"><strong>${event.ErnInf}</strong></p>
+                                <br>
+
+                                <div class="team-scores">
+                                    <p class="team-score"><strong><strong>${event.T1[0].Nm}:  </strong></strong>${event.Tr1C1}/${event.Tr1}</p>
+                                    <p class="team-score"><strong><strong>${event.T2[0].Nm}:  </strong></strong> ${event.Tr2C1}/${event.Tr2}</p>
+                                </div>
+                               
+                                <h4 class="remaining-info"><strong>🌟LIVE SCORE </strong>${event.ECo}</h4>
+                            `;
+                    seriesDiv.appendChild(eventDiv);
+                });
+                seriesContainer.appendChild(seriesDiv);
+            });
+        }
+    
+
+        attachEventListeners();
+        fetchData('live');*/
+        const seriesId = localStorage.getItem('seriesId');
+
+        console.log(seriesId)
+    </script>
+
+    
+</body>
+</html>

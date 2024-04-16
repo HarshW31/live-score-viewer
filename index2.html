@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Series Listing</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="match-details-container">
+        <h2>Match Details</h2>
+        <div id="match-details"></div>
+    </div>
+    
+
+    <div class="content-above-footer">
+        <p>Cricket Live Scores - Latest Cricket Results, Fixtures and Tables</p><br>
+        <p>
+            LiveScore.com is the go-to destination for live cricket scores and all the latest cricket news from around the world. Whether you’re after today’s results or
+            fixtures for Test cricket, one-day matches, or Twenty20 cricket, all the top leagues and tournaments at county and international levels are covered in unbeatable detail.
+            We provide fixtures, scores, and results from popular competitions such as the Cricket World Cup, the T20 World Cup, English cricket’s County Championship, the Indian Premier
+            League, and Australia’s Big Bash League. And of course, no cricket destination would be able to bowl you over without featuring The Ashes, the famous Test series played between
+            England and Australia for the right to hold the prestigious Ashes urn. With scorecards and match info at your fingertips 24/7, you won’t need to look anywhere else for the most 
+            comprehensive cricket coverage around.
+        </p>
+    </div>
+    
+    <footer>
+        <ul>
+            <li><a href="file:///C:/Users/mayur/Downloads/Careers%20-%20LSG.html">Careers</a></li>
+            <li><a href="file:///C:/Users/mayur/Downloads/Advertise%20-%20LSG.html">Advertise</a></li>
+            <li><a href="file:///C:/Users/mayur/Downloads/LiveScore%20Media.html">Faq</a></li>
+            <li><a href="file:///C:/Users/mayur/OneDrive/Desktop/Score%20Viewer/Score%20Viewer/Cookies%20Policy.html">Cookie Policy</a></li>
+            <li><a href="file:///C:/Users/mayur/OneDrive/Desktop/Score%20Viewer/Score%20Viewer/Terms%20of%20Use.html">Terms of Use</a></li>
+            <li><a href="file:///C:/Users/mayur/OneDrive/Desktop/Score%20Viewer/Score%20Viewer/Modern%20Slavery%20Act%20Statement.html">Modern Slavery Statement</a></li>
+            <li><a href="file:///C:/Users/mayur/Downloads/LiveScore%20Group%20-%20Converging%20the%20global%20sports%20media%20and%20betting%20industries.html">Corporate</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        async function fetchMatchDetails() {
+            const storedEid = localStorage.getItem('eventId');
+            if (!storedEid) {
+                console.error('Eid not found in localStorage.');
+                return;
+            }
+
+            const url = `https://livescore6.p.rapidapi.com/matches/v2/get-info?Eid=${storedEid}&Category=cricket`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': '963252ff97msh1da68a49cec685dp14ccf7jsna500f7e146c7',
+                    'X-RapidAPI-Host': 'livescore6.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch match details.');
+                }
+                const matchData = await response.json();
+
+                if (matchData && matchData.Eid) {
+                    displayMatchDetails(matchData);
+                } else {
+                    console.error('Invalid match data received:', matchData);
+                }
+            } catch (error) {
+                console.error('Error fetching match details:', error);
+            }
+        }
+
+        function displayMatchDetails(matchData) {
+            const matchDetailsContainer = document.getElementById('match-details');
+            if (!matchDetailsContainer) {
+                console.error('Match details container not found.');
+                return;
+            }
+
+            matchDetailsContainer.innerHTML = `
+
+             
+                <p><strong>Venue:</strong> ${matchData.Vnm}</p>
+                <p><strong>City:</strong> ${matchData.Vcy}</p>
+                <p><strong>Country:</strong> ${matchData.VCnm}</p>
+                <p><strong>Event Start Date:</strong> ${new Date(matchData.Esd).toLocaleString()}</p>
+            `
+            ;
+            
+            matchDetailsContainer.classList.remove('hidden'); 
+        }
+
+        // Fetch match details on page load
+        fetchMatchDetails();
+    </script>
+</body>
+</html>
