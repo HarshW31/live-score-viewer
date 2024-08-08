@@ -1,0 +1,13 @@
+<html>
+<body>
+<button onclick="openWin()">Open "New Window"</button>
+<script>
+var myWindow;
+function openWin()
+{
+myWindow = window.open("", "myWindow", "width=400,height=400");
+myWindow.document.write("<p>Hello Everyone.Welcome to new window.</p>");
+}
+</script>
+</body>
+</html>
